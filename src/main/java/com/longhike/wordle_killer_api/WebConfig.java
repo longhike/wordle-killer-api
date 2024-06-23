@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(@NonNull CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedOrigins("http://localhost:3000", "https://wordle-killer-api-c7649f1933cb.herokuapp.com")
+        .allowedOrigins("http://localhost:3000")
         .allowedMethods("POST")
         .allowedHeaders(CorsConfiguration.ALL);
   }
