@@ -10,7 +10,7 @@ public class GuessProcessor {
   public static boolean collectPossibles(String comparator, List<Letter> letters) {
     for (int i = 0; i < letters.size(); i++) {
       Letter letter = letters.get(i);
-      
+
       CharacterDisposition disposition = CharacterDisposition.values()[letter.getDisposition()];
 
       switch (disposition) {
@@ -20,12 +20,14 @@ public class GuessProcessor {
           }
           break;
         case UNKNOWN_POSITION:
-          if (comparator.indexOf(letter.getCharacter()) < 0) {
+          if (comparator.indexOf(letter.getCharacter()) < 0 || comparator.charAt(i) == letter.getCharacter()) {
             return false;
           }
           break;
         case NO_POSITION:
-          if (comparator.charAt(i) == letter.getCharacter()) {
+          if (comparator.charAt(i) == letter.getCharacter() ||
+              (comparator.contains(String.valueOf(letter.getCharacter())) &&
+                  !GuessProcessor.isCharacterValidSomewhereInWord(letter.character, letters))) {
             return false;
           }
           break;
@@ -43,6 +45,11 @@ public class GuessProcessor {
       }
     }
     return true;
+  }
+
+  private static boolean isCharacterValidSomewhereInWord(char c, List<Letter> letters) {
+    return letters.stream().filter((letter) -> letter.character == c)
+        .filter((letter) -> letter.disposition != CharacterDisposition.NO_POSITION.ordinal()).toList().size() > 0;
   }
 
 }
